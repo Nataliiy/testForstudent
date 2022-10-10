@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.orders}"></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="header :: head"></div>
+<span style="color:red" th:if="${ex != null}">
+            <div class="alert alert-warning">
+                    <strong th:text="${ex}"></strong>
+            </div>
+        </span>
+<h3 th:text="#{label.orders}"></h3>
+<table class="table">
+    <thead class="bg-light">
+    <tr>
+        <th scope="col" th:text="#{label.receiptId}"></th>
+        <th scope="col" th:text="#{label.userId}"></th>
+        <th scope="col" th:text="#{label.name}"></th>
+        <th scope="col" th:text="#{label.surname}"></th>
+        <th scope="col" th:text="#{label.email}"></th>
+        <th scope="col" th:text="#{label.telephone}"></th>
+        <th scope="col" th:text="#{label.address}"></th>
+        <th scope="col" th:text="#{label.orderIdOfPeriodicals}"></th>
+        <th scope="col" th:text="#{label.priceOnly}"></th>
+        <th scope="col" th:text="#{label.createDate}"></th>
+        <th scope="col" th:text="#{label.status}"></th>
+        <th scope="col" th:text="#{label.action}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="receipts,iter : ${receipt}">
+        <td th:text="${receipts.id}"></td>
+        <td th:text="${receipts.user.id}"></td>
+        <td th:text="${receipts.user.name}"></td>
+        <td th:text="${receipts.user.surname}"></td>
+        <td th:text="${receipts.user.email}"></td>
+        <td th:text="${receipts.user.telephone}"></td>
+        <td th:text="${receipts.user.address}"></td>
+        <td>
+                <span th:each="periodical,iter2 : ${receipts.receiptEntities}">
+                    <span th:if="${!iter2.last}" th:text="${periodical.id.periodicalSellId} + ','"></span>
+                    <span th:if="${iter2.last}" th:text="${periodical.id.periodicalSellId}"></span>
+                </span>
+        </td>
+        <td th:text="${session.decimalFormat.format(prices[iter.index])}"></td>
+        <td th:text="${#dates.format(receipts.getCreateTime(), 'dd-MM-yyyy')}"></td>
+        <td th:text="${receipts.status.statusName}"></td>
+        <form th:action="@{/accept-order}" method="post" th:if="${receipts.status.statusName == 'payed'}">
+            <td><input type="hidden" name="receiptId" th:value="${receipts.id}">
+                <input type="submit" th:value="#{label.accept}">
+        </form>
+        <form th:action="@{/discard-order}" method="post" th:if="${receipts.status.statusName == 'payed'}">
+            <input type="hidden" name="receiptId" th:value="${receipts.id}">
+            <input type="hidden" name="userId" th:value="${receipts.user.id}">
+            <input type="submit" th:value="#{label.discard}"></td>
+        </form>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

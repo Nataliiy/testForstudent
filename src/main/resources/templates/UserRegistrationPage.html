@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.registration}"></title>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+          id="bootstrap-css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
+    <div class="container">
+        <a class="navbar-brand" href="/shop?page=0" th:text="#{label.periodicals}"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/login" th:text="#{label.login}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/registration" th:text="#{label.signUp}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="?lang=en"><img width="30px" th:src="@{/images/img_1.png}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="?lang=ua"><img width="30px" th:src="@{/images/img.png}"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="login-form">
+    <div class="cotainer">
+        <span style="color:red" th:if="${ex != null}">
+            <div class="alert alert-warning">
+                    <strong th:text="${ex}"></strong>
+            </div>
+        </span>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header" th:text="#{label.customerRegisterForm}"></div>
+                    <div class="card-body">
+                        <form th:action="@{/registration}" method="post"
+                              th:object="${userForm}">
+                            <div class="form-group row">
+                                <label for="username"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.username}"></label>
+                                <div class="col-md-6">
+                                    <input type="text" id="username" class="form-control" th:field="*{username}"
+                                           pattern="[a-zA-Z0-9]{6,18}"
+                                           th:title="#{label.usernameValidate}" required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="email"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.email}"></label>
+                                <div class="col-md-6">
+                                    <input type="email" id="email" class="form-control" th:field="*{email}"
+                                           required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{username}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.password}"></label>
+                                <div class="col-md-6">
+                                    <input type="password" id="password" class="form-control"
+                                           th:field="*{password}"
+                                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$"
+                                           th:title="#{label.passwordValidate}" required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="surname"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.surname}"></label>
+                                <div class="col-md-6">
+                                    <input type="text" id="surname" class="form-control" th:field="*{surname}"
+                                           pattern="[а-яА-ЯёЁa-zA-Z]{1,25}"
+                                           th:title="#{label.surnameValidate}" required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="name" class="col-md-4 col-form-label text-md-right" th:text="#{label.name}"></label>
+                                <div class="col-md-6">
+                                    <input type="text" id="name" class="form-control" th:field="*{name}"
+                                           pattern="[а-яА-ЯёЁa-zA-Z]{1,25}"
+                                           th:title="#{label.nameValidate}" required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="telephone"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.telephone}"></label>
+                                <div class="col-md-6">
+                                    <input type="tel" id="telephone" class="form-control" th:field="*{telephone}"
+                                           th:title="#{label.telephoneValidate}" required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="address"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.address}"></label>
+                                <div class="col-md-6">
+                                    <input type="text" id="address" class="form-control" th:field="*{address}"
+                                           maxlength="1024" required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-6 offset-md-4" th:text="#{label.allFieldsValidate}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary" th:text="#{label.submit}"></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

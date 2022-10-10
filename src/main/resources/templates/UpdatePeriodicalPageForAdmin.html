@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.updatePeriodical}"></title>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+          id="bootstrap-css">
+</head>
+<body>
+
+<div th:replace="header :: head"></div>
+
+<div class="login-form">
+    <div class="cotainer">
+        <span style="color:red" th:if="${ex != null}">
+            <div class="alert alert-warning">
+                    <strong th:text="${ex}"></strong>
+            </div>
+        </span>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header" th:text="#{label.updatePeriodical}"></div>
+                    <div class="card-body">
+                        <form th:action="@{/update-periodical}"  method="post"
+                              th:object="${periodicalForm}" enctype="multipart/form-data">
+                            <div class="form-group row">
+                                <label for="title"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.title}"></label>
+                                <div class="col-md-6">
+                                    <input type="text" id="title" class="form-control" th:value="${periodicalForm.title}" th:field="*{title}"
+                                           pattern="[A-Za-z0-9_ ]{2,64}}" th:title="#{label.titleValidate}"
+                                           required autocomplete="off" autofocus>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="numberOfPages" class="col-md-4 col-form-label text-md-right" th:text="#{label.numberOfPages}">
+                                    </label>
+                                <div class="col-md-6">
+                                    <input type="number" id="numberOfPages" class="form-control" th:value="${periodicalForm.numberOfPages}" th:field="*{numberOfPages}"
+                                           min="1" max="1000" required autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="periodicityPerYear" class="col-md-4 col-form-label text-md-right" th:text="#{label.periodicityPerYear}"></label>
+                                <div class="col-md-6">
+                                    <select class="form-control" th:field="*{periodicityPerYear}" id="periodicityPerYear" required>
+                                        <option th:selected="${periodicalForm.periodicityPerYear}==1?'selected':''" value="1">1</option>
+                                        <option th:selected="${periodicalForm.periodicityPerYear}==2?'selected':''" value="2">2</option>
+                                        <option th:selected="${periodicalForm.periodicityPerYear}==3?'selected':''" value="3">3</option>
+                                        <option th:selected="${periodicalForm.periodicityPerYear}==4?'selected':''" value="4">4</option>
+                                        <option th:selected="${periodicalForm.periodicityPerYear}==6?'selected':''" value="6">6</option>
+                                        <option th:selected="${periodicalForm.periodicityPerYear}==12?'selected':''" value="12">12</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="percentageOfAdvertising" class="col-md-4 col-form-label text-md-right" th:text="#{label.percentageOfAdvertising}"></label>
+                                <div class="col-md-6">
+                                    <input type="number" id="percentageOfAdvertising" class="form-control"
+                                           th:value="${periodicalForm.percentageOfAdvertising}" th:field="*{percentageOfAdvertising}"
+                                           min="0" max="100" autocomplete="off" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="pricePerMonth" class="col-md-4 col-form-label text-md-right" th:text="#{label.pricePerMonth}"></label>
+                                <div class="col-md-6">
+                                    <input type="number" id="pricePerMonth" class="form-control" th:field="*{pricePerMonth}"
+                                           min="1" step="0.01" pattern="[+-]?([0-9]*[.])?[0-9]{1,2}"
+                                           th:title="#{label.priceValidate}" required autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="description"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.description}"></label>
+                                <div class="col-md-6">
+                                    <input type="text" id="description" class="form-control" th:field="*{description}"
+                                           maxlength="1024" required autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="rating" class="col-md-4 col-form-label text-md-right" th:text="#{label.rating}"></label>
+                                <div class="col-md-6">
+                                    <input type="number" id="rating" class="form-control" th:field="*{rating}"
+                                           min="0" step="0.01" max="5" pattern="[+-]?([0-9]*[.])?[0-9]{1}"
+                                           th:title="#{label.ratingValidate}" autocomplete="off"
+                                           required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="publisherName" class="col-md-4 col-form-label text-md-right" th:text="#{label.publisher}"></label>
+                                <div class="col-md-6">
+                                    <input type="text" id="publisherName" class="form-control" name="publisherName"
+                                           list="publisherList" pattern="[а-яА-ЯёЁa-zA-Z0-9]{1,25}" th:value="${periodicalForm.publisher.name}"
+                                           th:title="#{label.publisherValidate}" autocomplete="off" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="telephone" class="col-md-4 col-form-label text-md-right" th:text="#{label.telephonePublisher}"></label>
+                                <div class="col-md-6">
+                                    <input type="tel" id="telephone" class="form-control" name="publisherTelephone"
+                                           pattern="[0-9]{11,12}" th:title="#{label.telephoneValidate}"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group row" th:each="subjectsOfPeriod,iter : ${periodicalForm.periodicalHasSubject}">
+                                <label for="subject3" class="col-md-4 col-form-label text-md-right" th:text="#{label.subject}"></label>
+                                <div class="col-md-6">
+                                    <input th:readonly="${subjectsOfPeriod.subject.themesOfBooks!=null||subjectsOfPeriod.subject.themesOfBooks!=''}" type="text" id="subject3" class="form-control" name="subject" th:value="${subjectsOfPeriod.subject.themesOfBooks}"
+                                           list="subjectList" pattern="[а-яА-ЯёЁa-zA-Z0-9]{1,25}" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group row" th:if="${periodicalForm.periodicalHasSubject.size()<3}">
+                                <label for="subject" class="col-md-4 col-form-label text-md-right" th:text="#{label.subject}"></label>
+                                <div class="col-md-6">
+                                    <input type="text" id="subject" class="form-control" name="subject"
+                                           list="subjectList" pattern="[а-яА-ЯёЁa-zA-Z0-9]{1,25}" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group row" th:if="${periodicalForm.periodicalHasSubject.size()<2}">
+                                <label for="subject1" class="col-md-4 col-form-label text-md-right" th:text="#{label.subject}"></label>
+                                <div class="col-md-6">
+                                    <input type="text" id="subject1" class="form-control" name="subject"
+                                           list="subjectList" pattern="[а-яА-ЯёЁa-zA-Z0-9]{1,25}" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="file" class="col-md-4 col-form-label text-md-right" th:text="#{label.image}"></label>
+                                <div class="col-md-6">
+                                    <input type="file" id="file" class="form-control" name="file" required>
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="periodicalId" class="form-control" name="periodicalId" th:value="${periodicalForm.sellId}">
+                            <input type="hidden" id="oldImage" class="form-control" name="oldImage" th:value="${periodicalForm.images}">
+
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary" th:text="#{label.submit}">
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<datalist id="subjectList">
+    <option th:each="subject : ${subjectList}" th:label="${subject.themesOfBooks}" th:value="${subject.themesOfBooks}">
+</datalist>
+
+<datalist id="publisherList" th:each="publisher : ${publisherList}">
+    <option th:each="publisher : ${publisherList}" th:label="${publisher.name}" th:value="${publisher.name}">
+</datalist>
+
+</body>
+</html>

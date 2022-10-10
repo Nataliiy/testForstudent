@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html th:lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.topUpBalance}"></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div th:replace="header :: head"></div>
+
+<div align="center">
+    <span style="color:red" th:if="${ex != null}">
+            <div class="alert alert-warning">
+                <strong th:text="${ex}"></strong>
+            </div>
+    </span>
+    <h1 th:text="#{label.topUpBalance}"></h1>
+    <form th:action="@{/top-up}" method="post">
+        <input type="number" name="balance" min="1" step="0.01"/>
+        <input type="submit" th:value="#{label.submit}"/>
+    </form>
+</div>
+
+</body>
+</html>

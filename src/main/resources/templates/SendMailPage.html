@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html th:lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.sendMessage}"></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div th:replace="header :: head"></div>
+
+<span style="color:red" th:if="${ex != null}">
+            <div class="alert alert-warning">
+                <strong th:text="${ex}"></strong>
+            </div>
+    </span>
+
+<form class="send-message" th:action="@{/send-message}" method="post">
+    <input type="hidden" name="to" value="headerperiodicalsite@gmail.com"/><br/>
+    <input type="hidden" name="subject" th:value="${'Username -> ' + session.USER.username +', ID -> '+ session.USER.id}"><br/>
+    <label for="message" th:text="#{label.sendMessageLabel}"></label></br>
+    <textarea class="textarea" rows="10" cols="70" id="message" name="message"></textarea><br/>
+    <div class="col-md-6 offset-md-4">
+        <button type="submit" class="btn btn-primary" th:text="#{label.sendMessage}">
+        </button>
+    </div>
+</form>
+</body>
+</html>

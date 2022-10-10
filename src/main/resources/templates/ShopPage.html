@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.shop}"></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div th:replace="header :: head"></div>
+
+<div class="container">
+    <form th:action="@{/shop(page=0)}" method="post">
+        <select th:name="categoryPer">
+            <option th:value="all" th:label="#{label.allCategory}" th:selected="${session.category=='all'||session.category==null}">
+            <option th:each="subject : ${subjects}" th:selected="${session.category==subject.themesOfBooks}" th:value="${subject.themesOfBooks}" th:label="${subject.themesOfBooks}">
+        </select>
+        <select name="sort">
+            <option value="ws" th:selected="${session.sort=='ws'}" th:text="#{label.withoutSort}"></option>
+            <option value="periodical.pricePerMonth" th:selected="${session.sort=='periodical.pricePerMonth'}" th:text="#{label.priceOnly}"></option>
+            <option value="periodical.title" th:selected="${session.sort=='periodical.title'}" th:text="#{label.name}"></option>
+            <option value="periodical.rating" th:selected="${session.sort=='periodical.rating'}" th:text="#{label.rating}"></option>
+        </select>
+        <select name="order">
+            <option value="ASC" th:selected="${session.order=='ASC'}" th:text="A-Z"></option>
+            <option value="DESC" th:selected="${session.order=='DESC'}" th:text="Z-A"></option>
+        </select>
+        <label for="Search">Search</label>
+        <input type="text" id="Search" th:value="${session.searchField}" name="searchField">
+        <button type="submit" class="btn btn-primary" th:text="#{label.submit}"></button>
+    </form>
+</div>
+
+<div class="container">
+    <span style="color:red" th:if="${ex != null}">
+            <div class="alert alert-warning">
+                <strong th:text="${ex}"></strong>
+            </div>
+    </span>
+    <div class="card-header my-3" th:text="#{label.periodicals}"></div>
+    <div class="row">
+        <div class="col-md-3 my-3" th:each="periodical,iter : ${periodicals}">
+            <div class="card w-100">
+                <img class="card-img-top" th:src="@{${'/images/' + periodical.periodical.images}}"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${periodical.periodical.title}"></h5>
+                    <h6 class="price" th:text="#{label.priceOnly}+ ': ' +${periodical.periodical.pricePerMonth}"></h6>
+                    <h6 class="category" th:text="#{label.publisherShop}+' '+${periodical.periodical.publisher.name}"></h6>
+                    <h6 class="rating" th:text="#{label.ratingShop}+' '+${periodical.periodical.rating}"></h6>
+                    <div class="mt-3 d-flex justify-content-between">
+                        <form method="post" th:action="@{/add-cart}">
+                            <input name="periodicalId" type="hidden" th:value="${periodical.periodical.sellId}">
+                            <input name="page" type="hidden" th:value="${page}">
+                            <input class="btn btn-dark" type="image" th:src="@{/images/shopping-icon.png}">
+                        </form>
+                        <form method="post" th:action="@{/buy-now}">
+                            <input name="periodicalId" type="hidden" th:value="${periodical.periodical.sellId}">
+                            <input name="page" type="hidden" th:value="${page}">
+                            <input class="btn btn-dark" type="image" th:src="@{/images/Cash-icon.png}">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item" th:if="${page>0}"><a class="page-link" th:href="@{/shop(page=${page}-1)}" th:text="#{label.previous}"></a></li>
+            <li class="page-item" th:if="${countOfPages>1}" th:each="i,iter :${#numbers.sequence(1,countOfPages)}" ><a class="page-link" th:href="@{/shop(page=${iter.index})}" th:text="${iter.count}"></a></li>
+            <li class="page-item" th:if="${page}<(${countOfPages}-1)"><a class="page-link" th:href="@{/shop(page=${page+1})}" th:text="#{label.next}"></a></li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

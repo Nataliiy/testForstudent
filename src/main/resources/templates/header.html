@@ -1,0 +1,82 @@
+<div th:fragment="head">
+    <div class="header-dark">
+        <nav class="navbar navbar-dark navbar-expand-md navigation-clean-search">
+            <div class="container"><a class="navbar-brand" href="/shop?page=0" th:text="#{label.periodicals}"></a>
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span
+                        class="sr-only">Toggle</span><span
+                        class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse"
+                     id="navcol-1">
+                    <ul class="nav navbar-navk navbar-nav">
+                        <li class="nav-item" role="presentation" th:if="${session.ROLE} == null"><a class="nav-link"
+                                                                                                    href="/shop?page=0"
+                                                                                                    th:text="#{label.shop}"></a>
+                        </li>
+
+                        <li class="nav-item" role="presentation" th:if="${session.ROLE} == null"><a class="nav-link"
+                                                                                                    href="/cart"
+                                                                                                    th:text="#{label.cart}"></a>
+                        </li>
+
+                        <li class="nav-item" role="presentation" th:if="${session.ROLE} == 'customer'"><a
+                                class="nav-link" href="/shop?page=0" th:text="#{label.shop}"></a>
+                        </li>
+                        <li class="nav-item" role="presentation" th:if="${session.ROLE} == 'customer'"><a
+                                class="nav-link" href="/profile" th:text="#{label.profile}"></a></li>
+                        <li class="nav-item" role="presentation" th:if="${session.ROLE} == 'customer'"><a
+                                class="nav-link" href="/cart"
+                                th:text="#{label.cart}+' '+(${session.cart_list.size()}==0?'':${session.cart_list.size()})"></a>
+                        </li>
+                        <li class="nav-item" role="presentation" th:if="${session.ROLE} == 'customer'"><a
+                                class="nav-link"
+                                href="/send-message" th:text="#{label.sendMessage}"></a>
+                        </li>
+
+                        <a class="btn btn-light action-button" role="button"
+                           href="/top-up" th:if="${session.ROLE} == 'customer'"
+                           th:text="#{label.balanceAcc} + (${session.BALANCE}>0?${session.decimalFormat.format(session.BALANCE)}:0)"> </a>
+
+                        <li class="nav-item" role="presentation" th:if="${session.ROLE} == 'admin'"><a class="nav-link"
+                                                                                                       href="/periodicals"
+                                                                                                       th:text="#{label.periodicals}"></a>
+                        </li>
+                        <li class="nav-item" role="presentation" th:if="${session.ROLE} == 'admin'"><a class="nav-link"
+                                                                                                       href="/users"
+                                                                                                       th:text="#{label.users}"></a>
+                        </li>
+                        <li class="nav-item" role="presentation" th:if="${session.ROLE} == 'admin'"><a class="nav-link"
+                                                                                                       href="/orders"
+                                                                                                       th:text="#{label.orders}"></a>
+                        </li>
+                    </ul>
+                    <span class="navbar-text"><a href="/login" class="login"
+                                                 th:if="${session.ROLE} == null" th:text="#{label.login}"></a></span>
+                    <a class="btn btn-light action-button" role="button" href="/registration"
+                       th:if="${session.ROLE} == null" th:text="#{label.signUp}"></a>
+
+                    <form class="navbar-text" th:action="@{/logout}" method="post" th:unless="${session.ROLE} == null">
+                        <input class="login" type="submit" th:value="#{label.logOut}"/>
+                    </form>
+                    <ul th:if="${#request.getRequestURI()=='/shop'}">
+                        <li><a th:href="@{'/shop?page='+${page}+'&amp;lang=en'}"><img width="30px"
+                                                                                      th:src="@{/images/img_1.png}"></a>
+                        </li>
+                        <li><a th:href="@{'/shop?page='+${page}+'&amp;lang=ua'}"><img width="30px"
+                                                                                      th:src="@{/images/img.png}"></a>
+                        </li>
+                    </ul>
+                    <ul th:if="${#request.getRequestURI()=='/update-periodical'}">
+                        <li><a th:href="@{'/update-periodical?id='+${periodicalForm.sellId}+'&amp;lang=en'}"><img
+                                width="30px" th:src="@{/images/img_1.png}"></a></li>
+                        <li><a th:href="@{'/update-periodical?id='+${periodicalForm.sellId}+'&amp;lang=ua'}"><img
+                                width="30px" th:src="@{/images/img.png}"></a></li>
+                    </ul>
+                    <ul th:if="${#request.getRequestURI()!='/update-periodical' && #request.getRequestURI()!='/shop'}">
+                        <li><a href="?lang=en"><img width="30px" th:src="@{/images/img_1.png}"></a></li>
+                        <li><a href="?lang=ua"><img width="30px" th:src="@{/images/img.png}"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>

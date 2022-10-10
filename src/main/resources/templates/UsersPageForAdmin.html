@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{label.users}"></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div th:replace="header :: head"></div>
+
+<div class="login-form">
+    <div class="cotainer">
+        <span style="color:red" th:if="${ex != null}">
+            <div class="alert alert-warning">
+                    <strong th:text="${ex}"></strong>
+            </div>
+        </span>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header" th:text="#{label.addUser}"></div>
+                    <div class="card-body">
+                        <form th:action="@{/add-user}" method="post"
+                              th:object="${userForm}">
+                            <div class="form-group row">
+                                <label for="username"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.username}"></label>
+                                <div class="col-md-6">
+                                    <input type="text" id="username" class="form-control" th:field="*{username}"
+                                           pattern="[a-zA-Z0-9]{6,18}"
+                                           th:title="#{label.usernameValidate}" required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="email"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.email}"></label>
+                                <div class="col-md-6">
+                                    <input type="email" id="email" class="form-control" th:field="*{email}"
+                                           required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.password}"></label>
+                                <div class="col-md-6">
+                                    <input type="password" id="password" class="form-control"
+                                           th:field="*{password}"
+                                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$"
+                                           th:title="#{label.passwordValidate}" required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="surname"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.surname}"></label>
+                                <div class="col-md-6">
+                                    <input type="text" id="surname" class="form-control" th:field="*{surname}"
+                                           pattern="[а-яА-ЯёЁa-zA-Z]{1,25}"
+                                           th:title="#{label.surnameValidate}" required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="name" class="col-md-4 col-form-label text-md-right" th:text="#{label.name}"></label>
+                                <div class="col-md-6">
+                                    <input type="text" id="name" class="form-control" th:field="*{name}"
+                                           pattern="[а-яА-ЯёЁa-zA-Z]{1,25}"
+                                           th:title="#{label.nameValidate}" required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="telephone"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.telephone}"></label>
+                                <div class="col-md-6">
+                                    <input type="tel" id="telephone" class="form-control" th:field="*{telephone}"
+                                           pattern="[0-9]{11,12}"
+                                           th:title="#{label.telephoneValidate}" required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="address"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.address}"></label>
+                                <div class="col-md-6">
+                                    <input type="text" id="address" class="form-control" th:field="*{address}"
+                                           maxlength="300" required>
+                                    <span class="has-error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="nameOfRole"
+                                       class="col-md-4 col-form-label text-md-right" th:text="#{label.role}"></label>
+                                <div class="col-md-6">
+                                    <select id="nameOfRole" class="form-control" name="role" required>
+                                        <option th:selected="selected" th:disabled="disabled"  value="" th:text="#{label.chooseCategory}"></option>
+                                        <option value="customer">customer</option>
+                                        <option value="admin">admin</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-6 offset-md-4" th:text="#{label.allFieldsValidate}">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary" th:text="#{label.submit}"></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<h3 th:text="#{label.userInfoForTable}"></h3>
+<table class="table">
+    <thead class="bg-light">
+    <tr>
+        <th scope="col" th:text="#{label.username}"></th>
+        <th scope="col" th:text="#{label.email}"></th>
+        <th scope="col" th:text="#{label.name}"></th>
+        <th scope="col" th:text="#{label.surname}"></th>
+        <th scope="col" th:text="#{label.role}"></th>
+        <th scope="col" th:text="#{label.telephone}"></th>
+        <th scope="col" th:text="#{label.balance}"></th>
+        <th scope="col" th:text="#{label.banStatus}"></th>
+        <th scope="col" th:text="#{label.action}"></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:each="users : ${allUsers}">
+        <td th:text="${users.username}"></td>
+        <td th:text="${users.email}"></td>
+        <td th:text="${users.name}"></td>
+        <td th:text="${users.surname}"></td>
+        <td th:text="${users.role}"></td>
+        <td th:text="${users.telephone}"></td>
+        <td th:text="${users.balance}"></td>
+        <td th:text="${users.banStatus}"></td>
+        <form th:action="@{/ban-user}" method="post" th:if="${users.role != 'admin'}">
+            <td><input type="hidden" name="userId" th:value="${users.id}">
+                <input th:if="${users.banStatus == 'banned'}" type="submit" th:value="#{label.unban}">
+                <input th:unless="${users.banStatus == 'banned'}" type="submit" th:value="#{label.ban}">
+        </form>
+        <form th:action="@{/delete-user}" method="post" th:if="${users.role != 'admin'}">
+            <input type="hidden" name="userId" th:value="${users.id}">
+            <input type="submit" th:value="#{label.delete}"></td>
+        </form>
+    </tr>
+    </tbody>
+
+</table>
+</body>
+</html>
